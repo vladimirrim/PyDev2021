@@ -1,0 +1,40 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Book {
+    id: ID!
+    title: String!
+    author: String!
+    description: String!
+    created_at: String!
+}
+
+type Library {
+    id: ID!
+    books: [Book]
+}
+
+type BookResult {
+    success: Boolean!
+    errors: [String]
+    book: Book
+}
+
+type BooksResult {
+    success: Boolean!
+    errors: [String]
+    books: [Book]
+}
+
+type Query {
+    listBooks: BooksResult!
+    getBook(id: ID!): BooksResult!
+}
+
+type Mutation {
+    createBook(title: String!, author: String!, description: String!, created_at: String): BookResult!
+    updateBook(id: ID!, title: String, description: String): BookResult!
+    deleteBook(id: ID): BookResult!
+}
