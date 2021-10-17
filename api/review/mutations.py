@@ -18,9 +18,21 @@ def create_review_resolver(obj, info, book_id, rating, review):
     return payload
 
 
+def validate_rating(rating):
+    try:
+        rating = int(rating)
+        if rating > 5 or rating < 1:
+            return None
+        return rating
+    except Exception:
+        return None
+
 @convert_kwargs_to_snake_case
 @login_required
 def update_review_resolver(obj, info, id, book_id, rating, review):
+    rating = validate_rating(rating)
+    if rating is None:
+        return {"success": False, "errors": ["Invalid rating format"]}
     try:
         rev = Review.query.get(id)
         if rev:
